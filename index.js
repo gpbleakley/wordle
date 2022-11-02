@@ -4,28 +4,8 @@ const gameMessege = document.getElementById("output")
 var secret = []
 var attempt = []
 
-//randomly selects one of the words in the array
-function newWord(words) {
-  const random = Math.floor(Math.random() * words.length);
-  let secret = words[random];
-  console.log(secret);
-  
-  return secret
-}
-
-function newGame() {
-  gameMessege.innerHTML = "<br>"
-  secret = newWord(words);
-  attempt = 0
-  for (let y = 0; y < 5; y++) {
-    for (let x = 0; x < 5; x++) {
-      updateGrid(game,"","lightgrey",x,y)
-      }
-    }
-}
-
 //on buttton click
-//Carries out game flow 
+//carries out game flow 
 function Attempt() {
   let guess = document.getElementById("GuessButton").value.toLowerCase();
 
@@ -39,17 +19,39 @@ function Attempt() {
   let guessSplit = guess.split("");
   let colourMe = isLetter(secretSplit,guessSplit);
     
-  //User Feedback in grid
+  //user Feedback in grid
   for (let x = 0; x < 5; x++) {
     updateGrid(game,guessSplit[x],colourMe[x],x,attempt);
   }
   
-  //User Feedback
+  //user Feedback for game state
   gameMessege.innerHTML = feedback(guess,secret,attempt);
 
   attempt += 1
 }
 
+//randomly selects one of the words in the array
+function newWord(words) {
+  const random = Math.floor(Math.random() * words.length);
+  let secret = words[random];
+  console.log(secret);
+  
+  return secret
+}
+
+//wipes the board clean
+function newGame() {
+  gameMessege.innerHTML = "<br>"
+  secret = newWord(words);
+  attempt = 0
+  for (let y = 0; y < 5; y++) {
+    for (let x = 0; x < 5; x++) {
+      updateGrid(game,"","lightgrey",x,y)
+      }
+    }
+}
+
+//displays the game state to the user
 function feedback(guess,secret,attempt){
   let txt = ""
   let result= ""
@@ -68,7 +70,7 @@ function feedback(guess,secret,attempt){
 }
 
 //checks if guess is the same secert for each letter
-//adds result to an list fo updateGrid()
+//adds result to an list for updateGrid()
 function isLetter(secretSplit,guessSplit) {
   let colourMe = [];
   for (let x = 0; x < 5; x++) {
@@ -86,6 +88,7 @@ function isLetter(secretSplit,guessSplit) {
 }
 
 //creates an element to display output
+//gives each box an unique ID 
 function drawGrid(container){
   for (let y = 4; y >= 0; y--) {
     for (let x = 0; x < 5; x++) {
@@ -100,7 +103,7 @@ function drawGrid(container){
 
 drawGrid(game);
 
-//updates boxs with parameters 
+//updates boxes with parameters 
 function updateGrid(container,letter,colour,locationX,locationY){
     const box = document.getElementById(`box${locationX}${locationY}`);
     box.textContent = letter;
@@ -108,6 +111,7 @@ function updateGrid(container,letter,colour,locationX,locationY){
     container.appendChild(box);
 }
 
+//makes help button work
 function openForm() {
   document.getElementById("Help").style.display = "block";
 }
